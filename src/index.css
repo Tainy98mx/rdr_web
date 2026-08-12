@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Keyframes para desplegar de arriba hacia abajo */
+@keyframes desplegarEntrada {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes desplegarSalida {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+}
+
+/* Clase de despliegue vertical forzada desde el borde superior */
+.animacion-despliegue {
+  transform-origin: top center !important;
+  will-change: transform, opacity;
+}
+
+.animacion-despliegue[data-state='open'] {
+  animation: desplegarEntrada 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.animacion-despliegue[data-state='closed'] {
+  animation: desplegarSalida 0.2s ease-in forwards !important;
+}
