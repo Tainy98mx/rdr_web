@@ -43,14 +43,12 @@ export default function Navbar() {
       const currentScrollY = window.scrollY;
       const heroHeight = window.innerHeight - 80;
 
-      /* Cambia fondo a azul solo al salir del Hero */
       if (currentScrollY > heroHeight) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      /* Oculta al bajar y muestra al subir */
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
@@ -60,28 +58,36 @@ export default function Navbar() {
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  /* Control de rendimiento en móvil: Pausa de video y bloqueo de scroll */
+  /* ======================================================================= */
+  /* 2.1 OPTIMIZACIÓN EXTREMA DE GPU: PAUSA + OCULTACIÓN DE VIDEO + SCROLL   */
+  /* ======================================================================= */
   useEffect(() => {
     const videoElement = document.querySelector('video');
 
     if (isSheetOpen) {
       document.body.style.overflow = 'hidden';
-      if (videoElement && !videoElement.paused) {
+      if (videoElement) {
         videoElement.pause();
+        // Desactiva la carga de rasterizado del video en la GPU
+        videoElement.style.visibility = 'hidden';
       }
     } else {
       document.body.style.overflow = 'unset';
-      if (videoElement && videoElement.paused) {
+      if (videoElement) {
+        videoElement.style.visibility = 'visible';
         videoElement.play().catch(() => {});
       }
     }
 
     return () => {
       document.body.style.overflow = 'unset';
+      if (videoElement) {
+        videoElement.style.visibility = 'visible';
+      }
     };
   }, [isSheetOpen]);
 
@@ -131,7 +137,7 @@ export default function Navbar() {
     /* 4. CONTENEDOR PRINCIPAL (HEADER)                                      */
     /* ===================================================================== */
     <header
-      className={`fixed top-0 left-0 right-0 z-50 text-white transition-all duration-500 transform ${
+      className={`fixed top-0 left-0 right-0 z-50 text-white transition-all duration-500 transform-gpu ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       } ${
         isScrolled
@@ -209,9 +215,7 @@ export default function Navbar() {
             }
           `}</style>
 
-          {/* ===================================================================== */}
-          {/* BOTÓN DONAR ESCRITORIO (ALINEADO A LA ALTURA h-9 DE LOS MENÚS)        */}
-          {/* ===================================================================== */}
+          {/* BOTÓN DONAR ESCRITORIO */}
           <Button
             asChild
             className="bg-white text-[#1B428F] font-bold h-9 px-4 text-sm rounded-xl shadow-md hover:bg-white hover:text-[#1B428F] hover:shadow-lg hover:scale-[1.03] transition-all duration-300 active:scale-95 group border border-transparent"
@@ -249,15 +253,15 @@ export default function Navbar() {
               </button>
             </SheetTrigger>
 
-            {/* PANEL MÓVIL CON DEGRADADO AZUL PROFUNDO */}
+            {/* PANEL MÓVIL OPTIMIZADO CON TRANSFORM-GPU Y WILL-CHANGE */}
             <SheetContent
               side="right"
-              className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden"
+              className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu will-change-transform"
             >
               <SheetTitle className="sr-only">Menú</SheetTitle>
 
               <div>
-                {/* ENCABEZADO: LOGOS CENTRADOS VERTICALMENTE CON EL BOTÓN 'X' */}
+                {/* ENCABEZADO */}
                 <div className="border-b border-white/15 pb-4 mb-4 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5">
                     <img
@@ -272,7 +276,7 @@ export default function Navbar() {
                     />
                   </div>
 
-                  {/* BOTÓN DE CIERRE EN RECUADRO REDONDEADO */}
+                  {/* BOTÓN DE CIERRE REDONDEADO */}
                   <SheetClose asChild>
                     <button
                       aria-label="Cerrar menú"
@@ -283,7 +287,7 @@ export default function Navbar() {
                   </SheetClose>
                 </div>
 
-                {/* TÍTULO DEL MENÚ CENTRADO */}
+                {/* TÍTULO CENTRADO */}
                 <h3 className="text-center text-lg sm:text-xl font-black text-white uppercase tracking-wider py-2">
                   Menú de Navegación
                 </h3>
@@ -316,9 +320,9 @@ export default function Navbar() {
                 </Accordion>
               </div>
 
-              {/* PIE DEL MENÚ: REDES ARRIBA Y BOTÓN ABAJO */}
+              {/* PIE DEL MENÚ */}
               <div className="pt-6 border-t border-white/15 mt-6 space-y-5">
-                {/* REDES SOCIALES MÁS GRANDES */}
+                {/* REDES SOCIALES */}
                 <div className="flex items-center justify-center gap-3.5">
                   {socialLinks.map((social, idx) => {
                     const Icon = social.icon;
@@ -337,7 +341,7 @@ export default function Navbar() {
                   })}
                 </div>
 
-                {/* BOTÓN DONAR MÓVIL CON LATIDO */}
+                {/* BOTÓN DONAR MÓVIL */}
                 <a
                   href="#donar"
                   onClick={() => setIsSheetOpen(false)}
