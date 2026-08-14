@@ -1,5 +1,5 @@
 /* ========================================================================= */
-/* MENÚ DE NAVEGACIÓN MÓVIL (PANEL SHEET + ACORDEÓN + REDES)                 */
+/* MENÚ DE NAVEGACIÓN MÓVIL (ULTRALIGERO Y OPTIMIZADO)                       */
 /* ========================================================================= */
 import { Menu, Heart, X } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -21,7 +21,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
       <Button
         asChild
         size="sm"
-        className="bg-white text-[#1B428F] hover:bg-gray-100 font-bold px-3.5 py-1.5 h-8 rounded-xl text-xs flex items-center gap-1.5 shadow-sm active:scale-95"
+        className="bg-white text-[#1B428F] hover:bg-gray-100 font-bold px-3.5 py-1.5 h-8 rounded-xl text-xs flex items-center gap-1.5 shadow-sm active:scale-95 transition-transform"
       >
         <a href="#donar">
           <Heart className="w-3 h-3 fill-[#1B428F] text-[#1B428F]" />
@@ -42,7 +42,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
 
         <SheetContent
           side="right"
-          className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu will-change-transform duration-200 ease-out"
+          className="w-full sm:max-w-sm bg-[#153574] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu duration-200"
         >
           <SheetTitle className="sr-only">Menú</SheetTitle>
 
@@ -65,7 +65,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
               <SheetClose asChild>
                 <button
                   aria-label="Cerrar menú"
-                  className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition-all duration-200 active:scale-95 shrink-0"
+                  className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 flex items-center justify-center text-white transition-transform active:scale-95 shrink-0"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -94,7 +94,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
                         key={subIndex}
                         href="#"
                         onClick={() => onOpenChange(false)}
-                        className="block rounded-xl px-3.5 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:bg-white hover:text-[#1B428F] active:bg-white active:text-[#1B428F]"
+                        className="block rounded-xl px-3.5 py-2.5 text-sm font-bold text-white transition-colors duration-150 hover:bg-white hover:text-[#1B428F] active:bg-white active:text-[#1B428F]"
                       >
                         {subitem}
                       </a>
@@ -118,7 +118,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={social.label}
-                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white hover:text-[#1B428F] flex items-center justify-center text-white text-lg transition-all duration-300 active:scale-90 border border-white/15"
+                    className="w-11 h-11 rounded-full bg-white/10 hover:bg-white hover:text-[#1B428F] flex items-center justify-center text-white text-lg transition-colors border border-white/15"
                   >
                     <Icon />
                   </a>
@@ -130,9 +130,9 @@ export default function NavMobile({ isOpen, onOpenChange }) {
             <a
               href="#donar"
               onClick={() => onOpenChange(false)}
-              className="w-full bg-white text-[#1B428F] font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-base shadow-lg transition-all active:scale-95 hover:bg-gray-100"
+              className="w-full bg-white text-[#1B428F] font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-base shadow-md transition-transform active:scale-95 hover:bg-gray-100"
             >
-              <Heart className="w-5 h-5 fill-[#1B428F] text-[#1B428F] animate-heartbeat" />
+              <Heart className="w-5 h-5 fill-[#1B428F] text-[#1B428F]" />
               <span>Realizar una Donación</span>
             </a>
           </div>

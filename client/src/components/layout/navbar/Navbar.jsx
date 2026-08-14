@@ -1,7 +1,7 @@
 /* ========================================================================= */
-/* CONTENEDOR PRINCIPAL: NAVBAR                                              */
+/* CONTENEDOR PRINCIPAL: NAVBAR (OPTIMIZADO PARA MÓVIL Y GPU)                */
 /* ========================================================================= */
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import NavDesktop from './NavDesktop';
 import NavMobile from './NavMobile';
 import logoCorona from '@/assets/rdr_logo_corona.svg';
@@ -10,35 +10,40 @@ import logoTexto from '@/assets/rdr_logo_texto.svg';
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  /* Control de visibilidad de barra al hacer scroll */
+  const lastScrollY = useRef(0);
+  const ticking = useRef(false);
+
+  /* Control de visibilidad con requestAnimationFrame (cero lag al hacer scroll) */
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const heroHeight = window.innerHeight - 80;
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          const heroHeight = window.innerHeight - 80;
 
-      if (currentScrollY > heroHeight) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
+          setIsScrolled(currentScrollY > heroHeight);
+
+          if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+            setIsVisible(false);
+          } else {
+            setIsVisible(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+          ticking.current = false;
+        });
+
+        ticking.current = true;
       }
-
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } else {
-        setIsVisible(true);
-      }
-
-      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
-  /* Control de GPU del video y bloqueo de scroll */
+  /* Control de video y bloqueo de scroll al abrir menú */
   useEffect(() => {
     const videoElement = document.querySelector('video');
 
@@ -46,56 +51,37 @@ export default function Navbar() {
       document.body.style.overflow = 'hidden';
       if (videoElement) {
         videoElement.pause();
-        videoElement.style.display = 'none';
       }
     } else {
       document.body.style.overflow = 'unset';
       if (videoElement) {
-        videoElement.style.display = 'block';
         videoElement.play().catch(() => {});
       }
     }
 
     return () => {
       document.body.style.overflow = 'unset';
-      if (videoElement) {
-        videoElement.style.display = 'block';
-      }
     };
   }, [isSheetOpen]);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 text-white transition-all duration-500 transform-gpu flex items-center ${
+      className={`fixed top-0 left-0 right-0 z-50 text-white transition-transform duration-300 transform-gpu flex items-center ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
-      } ${isScrolled ? 'h-18 shadow-lg' : 'h-20 shadow-none'}`}
+      } ${isScrolled ? 'h-18 shadow-md' : 'h-20'}`}
     >
-      {/* CAPA DE FONDO CON TRANSICIÓN SUTIL DE OPACIDAD */}
+      {/* Capa de fondo con degradado y transición sutil */}
       <div
-        className={`absolute inset-0 bg-linear-to-r from-[#1B428F] via-[#153574] to-[#0D1F42] transition-opacity duration-700 ease-in-out -z-10 pointer-events-none ${
+        className={`absolute inset-0 bg-linear-to-r from-[#1B428F] via-[#153574] to-[#0D1F42] transition-opacity duration-500 ease-out -z-10 pointer-events-none ${
           isScrolled ? 'opacity-100' : 'opacity-0'
         }`}
       />
-
-      {/* Animación global de latido */}
-      <style>{`
-        @keyframes heartbeat {
-          0%, 100% { transform: scale(1); }
-          14% { transform: scale(1.10); }
-          28% { transform: scale(1); }
-          42% { transform: scale(1.10); }
-          70% { transform: scale(1); }
-        }
-        .animate-heartbeat {
-          animation: heartbeat 1.8s infinite ease-in-out;
-        }
-      `}</style>
 
       <div className="w-full px-6 sm:px-12 flex items-center justify-between">
         {/* Logos principales */}
         <a
           href="#"
-          className="flex items-center gap-3 py-1 transition-transform duration-300 hover:scale-105"
+          className="flex items-center gap-3 py-1 transition-transform duration-200 hover:scale-102"
         >
           <img
             src={logoCorona}
