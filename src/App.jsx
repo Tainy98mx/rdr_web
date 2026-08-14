@@ -15,7 +15,7 @@ function App() {
       <Navbar />
 
       {/* Contenido dinámico principal (Home) */}
-      <main className="flex-grow">
+      <main className="grow">
         <Home />
       </main>
 
