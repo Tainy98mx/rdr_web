@@ -63,7 +63,7 @@ export default function Navbar() {
   }, [lastScrollY]);
 
   /* ======================================================================= */
-  /* 2.1 OPTIMIZACIÓN EXTREMA DE GPU: PAUSA + OCULTACIÓN DE VIDEO + SCROLL   */
+  /* 2.1 OPTIMIZACIÓN EXTREMA: LIBERACIÓN TOTAL DE GPU DEL VIDEO             */
   /* ======================================================================= */
   useEffect(() => {
     const videoElement = document.querySelector('video');
@@ -72,13 +72,12 @@ export default function Navbar() {
       document.body.style.overflow = 'hidden';
       if (videoElement) {
         videoElement.pause();
-        // Desactiva la carga de rasterizado del video en la GPU
-        videoElement.style.visibility = 'hidden';
+        videoElement.style.display = 'none'; // Libera la memoria de GPU de inmediato
       }
     } else {
       document.body.style.overflow = 'unset';
       if (videoElement) {
-        videoElement.style.visibility = 'visible';
+        videoElement.style.display = 'block';
         videoElement.play().catch(() => {});
       }
     }
@@ -86,7 +85,7 @@ export default function Navbar() {
     return () => {
       document.body.style.overflow = 'unset';
       if (videoElement) {
-        videoElement.style.visibility = 'visible';
+        videoElement.style.display = 'block';
       }
     };
   }, [isSheetOpen]);
@@ -253,10 +252,10 @@ export default function Navbar() {
               </button>
             </SheetTrigger>
 
-            {/* PANEL MÓVIL OPTIMIZADO CON TRANSFORM-GPU Y WILL-CHANGE */}
+            {/* PANEL MÓVIL OPTIMIZADO */}
             <SheetContent
               side="right"
-              className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu will-change-transform"
+              className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu will-change-transform duration-200 ease-out"
             >
               <SheetTitle className="sr-only">Menú</SheetTitle>
 
@@ -348,7 +347,7 @@ export default function Navbar() {
                   className="w-full bg-white text-[#1B428F] font-extrabold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-base shadow-lg transition-all active:scale-95 hover:bg-gray-100"
                 >
                   <Heart className="w-5 h-5 fill-[#1B428F] text-[#1B428F] animate-heartbeat" />
-                  <span>Realizar una Donación</span>
+                  <span>Realizar XXX Donación</span>
                 </a>
               </div>
             </SheetContent>
