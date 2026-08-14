@@ -1,38 +1,22 @@
 /* ========================================================================= */
 /* 1. IMPORTACIONES Y DEPENDENCIAS                                           */
 /* ========================================================================= */
-import { useRef, useState } from 'react';
 import { ChevronsRight } from 'lucide-react';
-import heroVideo from '../../assets/rdr_video.mp4';
 import { Button } from '@/components/ui/button';
 
 export default function Hero() {
-  const videoRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  /* Se activa la entrada de elementos cuando el video está listo para reproducir */
-  const handleVideoCanPlay = () => {
-    setIsVisible(true);
-  };
-
   return (
     /* ===================================================================== */
     /* 2. CONTENEDOR PRINCIPAL PANTALLA COMPLETA                             */
     /* ===================================================================== */
     <section className="relative w-full min-h-screen pt-32 pb-20 flex items-center justify-center bg-slate-950 overflow-hidden font-sans">
       {/* =================================================================== */}
-      {/* 2.1 VIDEO DE FONDO Y FILTRO ATMOSFÉRICO                             */}
+      {/* 2.1 IMAGEN DE FONDO (PRUEBA SIN VIDEO) Y FILTRO ATMOSFÉRICO         */}
       {/* =================================================================== */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-        <video
-          ref={videoRef}
-          src={heroVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onLoadedData={handleVideoCanPlay}
+        <img
+          src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1920&auto=format&fit=crop"
+          alt="Fondo Iglesia Rey de Reyes"
           className="w-full h-full object-cover object-center scale-105"
         />
 
@@ -54,15 +38,11 @@ export default function Hero() {
       `}</style>
 
       {/* ===================================================================== */}
-      {/* 3. CONTENIDO PRINCIPAL CON ENTRADA ESCALONADA                         */}
+      {/* 3. CONTENIDO PRINCIPAL CON ENTRADA ESCALONADA (CSS PURO)             */}
       {/* ===================================================================== */}
       <div className="w-full max-w-5xl mx-auto px-6 sm:px-12 lg:px-16 relative z-10 text-center flex flex-col items-center">
-        {/* Título Principal Monumental con Degradado Animado */}
-        <h1
-          className={`text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.08] drop-shadow-xl transition-all duration-1000 ease-out transform ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        {/* Título Principal Monumental */}
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tighter leading-[1.08] drop-shadow-xl animate-in fade-in slide-in-from-bottom-8 duration-1000 ease-out">
           Una comunidad unida <br />
           <span className="inline-block pb-2 px-1 text-transparent bg-clip-text bg-linear-to-r from-blue-500 via-cyan-300 to-sky-400 animate-gradient-move">
             por la fe,
@@ -75,24 +55,16 @@ export default function Hero() {
         </h1>
 
         {/* Subtítulo Inspirador */}
-        <p
-          className={`mt-6 text-base sm:text-xl text-slate-200 max-w-2xl font-medium leading-relaxed drop-shadow-sm transition-all duration-1000 delay-200 ease-out transform ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
+        <p className="mt-6 text-base sm:text-xl text-slate-200 max-w-2xl font-medium leading-relaxed drop-shadow-sm animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 ease-out fill-mode-backwards">
           Descubre un espacio para crecer espiritualmente, conectar en familia y transformar vidas a
           través del amor de Dios.
         </p>
 
         {/* ===================================================================== */}
-        {/* 3.1 BOTONES DE ACCIÓN EQUILIBRADOS Y MANTENIENDO FORMA               */}
+        {/* 3.1 BOTONES DE ACCIÓN EQUILIBRADOS                                   */}
         {/* ===================================================================== */}
-        <div
-          className={`mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto transition-all duration-1000 delay-400 ease-out transform ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          {/* Botón Principal: Usa ChevronsRight de Lucide Icons */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300 ease-out fill-mode-backwards">
+          {/* Botón Principal */}
           <Button
             variant="default"
             className="w-full sm:w-64 h-13 text-base font-bold rounded-xl bg-white text-[#1B428F] hover:bg-[#1B428F] hover:text-white shadow-md hover:shadow-xl hover:scale-[1.03] transition-all duration-300 active:scale-95 group"
@@ -107,7 +79,7 @@ export default function Hero() {
             </a>
           </Button>
 
-          {/* Botón Secundario: Mismo rounded-xl, texto base (16px) y animación suave de escala */}
+          {/* Botón Secundario */}
           <Button
             variant="glass"
             className="w-full sm:w-64 h-13 text-base font-semibold rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/30 hover:border-white/60 backdrop-blur-md hover:scale-[1.03] transition-all duration-300 active:scale-95"
