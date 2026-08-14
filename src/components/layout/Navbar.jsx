@@ -30,13 +30,14 @@ import { Button } from '@/components/ui/button';
 
 export default function Navbar() {
   /* ======================================================================= */
-  /* 2. ESTADOS Y LÓGICA DE SCROLL (DIRECCIÓN Y ALTURA)                       */
+  /* 2. ESTADOS Y LÓGICA DE SCROLL Y MENÚ MÓVIL                              */
   /* ======================================================================= */
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
+  /* Control de visibilidad de barra al hacer scroll */
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -62,6 +63,27 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  /* Control de rendimiento en móvil: Pausa de video y bloqueo de scroll */
+  useEffect(() => {
+    const videoElement = document.querySelector('video');
+
+    if (isSheetOpen) {
+      document.body.style.overflow = 'hidden';
+      if (videoElement && !videoElement.paused) {
+        videoElement.pause();
+      }
+    } else {
+      document.body.style.overflow = 'unset';
+      if (videoElement && videoElement.paused) {
+        videoElement.play().catch(() => {});
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isSheetOpen]);
 
   /* ======================================================================= */
   /* 3. ESTRUCTURA DEL MENÚ DE NAVEGACIÓN                                   */
@@ -261,7 +283,12 @@ export default function Navbar() {
                   </SheetClose>
                 </div>
 
-                {/* ACORDEÓN MÓVIL (EXACTAMENTE TU ESTRUCTURA ORIGINAL) */}
+                {/* TÍTULO DEL MENÚ CENTRADO */}
+                <h3 className="text-center text-lg sm:text-xl font-black text-white uppercase tracking-wider py-2">
+                  Menú de Navegación
+                </h3>
+
+                {/* ACORDEÓN MÓVIL */}
                 <Accordion type="single" collapsible className="w-full">
                   {menuStructure.map((menu, index) => (
                     <AccordionItem
