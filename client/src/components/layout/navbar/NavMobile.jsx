@@ -1,5 +1,5 @@
 /* ========================================================================= */
-/* MENÚ DE NAVEGACIÓN MÓVIL (ULTRALIGERO Y OPTIMIZADO)                       */
+/* MENÚ DE NAVEGACIÓN MÓVIL (DEGRADADO COMPLETO + MÁXIMA FLUIDEZ)            */
 /* ========================================================================= */
 import { Menu, Heart, X } from 'lucide-react';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -42,7 +42,7 @@ export default function NavMobile({ isOpen, onOpenChange }) {
 
         <SheetContent
           side="right"
-          className="w-full sm:max-w-sm bg-[#153574] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu duration-200"
+          className="w-full sm:max-w-sm bg-linear-to-b from-[#1B428F] via-[#153574] to-[#0D1F42] text-white border-l border-white/10 p-6 flex flex-col justify-between overflow-y-auto [&>button]:hidden transform-gpu duration-200"
         >
           <SheetTitle className="sr-only">Menú</SheetTitle>
 
