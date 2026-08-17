@@ -39,3 +39,34 @@ export const socialLinks = [
   { icon: FaTiktok, href: 'https://tiktok.com', label: 'TikTok' },
   { icon: FaSoundcloud, href: 'https://soundcloud.com', label: 'SoundCloud' },
 ];
+
+/* Helper para convertir texto a slug URL limpio (ej. "Comunidad RDR" -> "comunidad-rdr") */
+export function getSlug(text) {
+  if (!text) return '';
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/ /g, '-')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+/* Helper para obtener la categoría padre activa según el hash actual */
+export function getActiveCategory(currentHash) {
+  if (!currentHash || currentHash === '#' || currentHash === '#donar' || currentHash === '#hero') {
+    return null;
+  }
+  const cleanHash = currentHash.replace('#', '');
+
+  for (const menu of menuStructure) {
+    const parentSlug = getSlug(menu.title);
+    if (cleanHash === parentSlug) return menu.title;
+
+    for (const subitem of menu.subitems) {
+      const subSlug = getSlug(subitem);
+      if (cleanHash === subSlug) return menu.title;
+    }
+  }
+
+  return null;
+}

@@ -44,7 +44,7 @@ function NavigationMenuItem({ className, ...props }) {
 }
 
 const navigationMenuTriggerStyle = cva(
-  'group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-3 py-1.5 text-base font-bold transition-colors outline-none disabled:pointer-events-none disabled:opacity-50'
+  'group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-xl px-3 py-1.5 text-base font-bold transition-colors outline-none disabled:pointer-events-none disabled:opacity-50'
 );
 
 function NavigationMenuTrigger({ className, children, ...props }) {

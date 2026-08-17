@@ -1,11 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-
-/* ========================================================================= */
-/* 1. FUENTES DE GOOGLE                                                      */
-/* ========================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -33,39 +29,126 @@ h6 {
 /* ========================================================================= */
 /* 3. ANIMACIONES Y KEYFRAMES                                                */
 /* ========================================================================= */
-@keyframes desplegarEntrada {
+@keyframes mobileHeartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.15);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+.animate-mobile-heartbeat {
+  animation: mobileHeartbeat 1.8s infinite ease-in-out;
+}
+
+/* Keyframe para el desplazamiento continuo del degradado Aurora */
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Móvil: Degradado estático nítido y sin costo de procesamiento */
+.aurora-text {
+  background: linear-gradient(135deg, #ff0080, #7928ca, #0070f3, #38bdf8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* En escritorio (md en adelante): Gradiente animado sin perder el recorte de texto */
+@media (min-width: 768px) {
+  .aurora-text {
+    background-image: linear-gradient(90deg, #ff0080, #7928ca, #0070f3, #38bdf8, #ff0080);
+    background-size: 300% 100%;
+    animation: aurora 2.5s ease infinite;
+    will-change: background-position;
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+}
+
+/* Ocultar barra de scroll manteniendo funcionalidad táctil */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Styling de Barra de Scroll */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4a4d;
+  border-radius: 9999px;
+  border: 1.5px solid #121212;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b6b70;
+}
+
+/* Animaciones fluidas para Acordeón */
+@keyframes accordionDown {
   from {
+    height: 0;
     opacity: 0;
-    transform: scaleY(0);
+    transform: translateY(-4px);
   }
   to {
+    height: var(--radix-accordion-content-height);
     opacity: 1;
-    transform: scaleY(1);
+    transform: translateY(0);
   }
 }
 
-@keyframes desplegarSalida {
+@keyframes accordionUp {
   from {
+    height: var(--radix-accordion-content-height);
     opacity: 1;
-    transform: scaleY(1);
+    transform: translateY(0);
   }
   to {
+    height: 0;
     opacity: 0;
-    transform: scaleY(0);
+    transform: translateY(-4px);
   }
 }
 
-.animacion-despliegue {
-  transform-origin: top center !important;
-  will-change: transform, opacity;
+.animate-accordion-down {
+  animation: accordionDown 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: height, opacity, transform;
+  transform-origin: top center;
 }
 
-.animacion-despliegue[data-state='open'] {
-  animation: desplegarEntrada 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-}
-
-.animacion-despliegue[data-state='closed'] {
-  animation: desplegarSalida 0.2s ease-in forwards !important;
+.animate-accordion-up {
+  animation: accordionUp 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: height, opacity, transform;
+  transform-origin: top center;
 }
 
 @theme inline {
